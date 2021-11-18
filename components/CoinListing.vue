@@ -1,60 +1,15 @@
 <template>
   <div class="grid grid-cols-4 bg-gray-200 w-screen h-screen relative">
-    <div class="col-start-1 col-end-2 bg-white mt-20 mb-10 px-5 rounded-tr-lg rounded-br-lg shadow-md sticky">
-      <img class="absolute -mt-12" src="../assets/LOGO1.png" alt="">
-      <div class="mt-20">
-        <button class="accordion" @click="select">
-          <div class="flex justify-between">
-            <p>TokenRelated</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="/">Listings</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">KYC</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="/listingdetails">ShibaWatch SWAP</a></div>
-        </div>
-      </div>
-      <div class="mt-5 text-gray-500 font-semibold text-sm">
-        OTHER FUNCTIONS
-      </div>
-      <div class="mt-5">
-        <button class="accordion" @click="select">
-          <div class="flex justify-between">
-            <p>Stake and Lend</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="#">Stake</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-        </div>
-      </div>
-      <div class="mt-5 font-bold text-gray-700">NFT Marketplace</div>
-      <div class="mt-5 font-bold text-gray-700"><a href="/rewards">Rewards</a></div>
-    </div>
+    <Leftside />
     <div class="col-start-2 col-end-5 border-2 border-gray-200">
-      <div class="w-full bg-white -mx-2 flex justify-between border-2 border-gray-300">
-        <div></div>
-        <div class="flex">
-          <button type="button" class="bg-purple-800 mx-1 px-5 py-2 mt-6 mb-6 text-white rounded-lg cursor-pointer focus:outline-none" @click="signin">Sign In</button>
-          <div class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer">Connect Wallet</div>
-        </div>
-      </div>
+      <Topside />
       <div class="flex justify-between">
         <div>
           <p class="font-bold mt-3 mx-5 text-3xl">Listings</p>
           <p class="mx-5 mt-2 font-semibold text-gray-700">We collate and streamline all existing and upcoming coins all in one  listing</p>
         </div>
         <div class="flex mt-10 h-10 bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-1 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
+          <SvgIcon text="plus" />
           <a href="/create"><p>Create Listing</p></a>
         </div>
       </div>
@@ -63,12 +18,7 @@
           <div class="flex mt-3 ml-5">
             <div class="flex border-2 rounded h-8">
                 <button class="flex items-center justify-center px-4 bg-white">
-                    <svg class="w-5 h-5 text-green-300" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z">
-                        </path>
-                    </svg>
+                    <SvgIcon text="search" />
                 </button>
                 <input type="text" class="px-4 py-2 w-80 focus:outline-none" placeholder="Search...">
             </div>
@@ -210,10 +160,16 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import SvgIcon from '../components/SvgIcon'
+import Leftside from './Leftside'
+import Topside from './Topside'
 
 export default {
   components: {
-    Multiselect
+    Multiselect,
+    SvgIcon,
+    Leftside,
+    Topside
   },
   data() {
     return {
@@ -225,22 +181,6 @@ export default {
     signin() {
       document.location = '/login';
     },
-    select() {
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-            panel.style.display = "none";
-          } else {
-            panel.style.display = "block";
-          }
-        });
-      }
-    },
     createlist() {
 
     }
@@ -249,55 +189,6 @@ export default {
 
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-button[disabled="disabled"]{
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-button.vsa-item__trigger {
-  width: 100%;
-}
-div.leftbox {
-  box-shadow:
-  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-  0 12.5px 10px rgba(0, 0, 0, 0.06);
-}
-
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 5px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 20px;
-  font: bold;
-  transition: 0.4s;
-}
-.active, .accordion:hover {
-  background-color: #ccc;
-  color: blue;
-  outline: none;
-}
-
-.panel {
-  color:#a0aec0;
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow: hidden;
-}
 </style>

@@ -1,51 +1,8 @@
 <template>
   <div class="grid grid-cols-4 bg-gray-200 w-screen h-full relative">
-    <div class="col-start-1 col-end-2 bg-white mt-20 mb-10 px-5 rounded-tr-lg rounded-br-lg shadow-md sticky">
-      <img class="absolute -mt-12" src="../assets/LOGO1.png" alt="">
-      <div class="mt-20">
-        <button class="accordion" @click="select">
-          <div class="flex justify-between">
-            <p>TokenRelated</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="/">Listings</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">KYC</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">ShibaWatch SWAP</a></div>
-        </div>
-      </div>
-      <div class="mt-5 text-gray-500 font-semibold text-sm">
-        OTHER FUNCTIONS
-      </div>
-      <div class="mt-5">
-        <button class="accordion" @click="select">
-          <div class="flex justify-between">
-            <p>Stake and Lend</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="#">Stake</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-        </div>
-      </div>
-      <div class="mt-5 font-bold text-gray-700">NFT Marketplace</div>
-      <div class="mt-5 font-bold text-gray-700"><a href="/rewards">Rewards</a></div>
-    </div>
+    <Leftside />
     <div class="col-start-2 col-end-5 border-2 border-gray-200">
-      <div class="w-full bg-white -mx-2 flex justify-between border-2 border-gray-300">
-        <div></div>
-        <div class="flex">
-          <button type="button" class="bg-purple-800 mx-1 px-5 py-2 mt-6 mb-6 text-white rounded-lg cursor-pointer focus:outline-none" @click="signin">Sign In</button>
-          <div class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer">Connect Wallet</div>
-        </div>
-      </div>
+      <Topside />
       <div class="grid gird-cols-3 gap-4 mt-5">
         <div class="col-start-1 col-end-3 ml-3">
           <p class="font-bold text-2xl text-gray-600">Listing Details</p>
@@ -228,11 +185,15 @@
 <script>
 import Multiselect from 'vue-multiselect'
 import SvgIcon from '../components/SvgIcon'
+import Leftside from './Leftside'
+import Topside from './Topside'
 
 export default {
   components: {
     Multiselect,
-    SvgIcon: SvgIcon
+    SvgIcon: SvgIcon,
+    Leftside: Leftside,
+    Topside: Topside
   },
   data() {
     return {
