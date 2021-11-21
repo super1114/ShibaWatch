@@ -17,10 +17,10 @@
         <div class="flex">
           <div class="flex mt-3 ml-5">
             <div class="flex border-2 rounded h-8">
-                <button class="flex items-center justify-center px-4 bg-white">
+                <button class="flex items-center justify-center pl-2 bg-white">
                     <SvgIcon text="search" />
                 </button>
-                <input type="text" class="px-4 py-2 w-80 focus:outline-none" placeholder="Search...">
+                <input type="text" class="px-2 py-2 w-80 focus:outline-none" v-model="searchkey" placeholder="Search...">
             </div>
           </div>
           <div class="flex justify-between">
@@ -32,97 +32,37 @@
               <div class="w-3 h-3 rounded-full bg-pink-500 mt-6 mx-3"></div>
               <p class="mt-5 -mx-2 text-xs">Doxxed</p>
             </div>
-            <p class="mt-5 mx-20 text-xs"><span class="text-gray-500">Sortby:</span>Name</p>
-            <p class="mt-5 mx-5 text-xs text-gray-500">Rows per page:5</p>
-            <p class="mt-5 mx-5 text-xs text-gray-500">1-5 of 5</p>
-            <p class="mt-5 mx-5 text-xs cursor-pointer">< ></p>
           </div>
         </div>
         <table class="table-auto mt-5 w-full p-10">
             <thead class="border-b-2 bg-gray-200 border-gray-300 border-t-2 border-gray-300">
-              <tr class="">
+              <tr>
                 <th class="invisible bg-gray-300">avatar</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">NAME</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">METRICS</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">SOCIAL MEDIA STRENGTH</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">UPLOADED DATE</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">STATUS</th>
-                <th class="text-left text-gray-800 font-semibold text-sm">SHIBA RATING</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">NAME</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">METRICS</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">SOCIAL MEDIA STRENGTH</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">UPLOADED DATE</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">STATUS</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">SHIBA RATING</th>
               </tr>
             </thead>
             <tbody class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-              <tr class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
+              <tr v-for="coin in coins" :key="coin.id" class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
                 <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-left text-sm">Shiba Watch</td>
+                <td class="text-center text-sm">{{coin.name}}</td>
                 <td>
-                  <div class="flex justify-left">
-                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <div class="w-3 h-3 bg-purple-700 rounded-full mx-2"></div>
-                    <div class="w-3 h-3 bg-pink-500 rounded-full mx-1"></div>
+                  <div class="flex justify-center">
+                    <div v-if="coin.audit_link!=''" class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div v-if="coin.kyc_link!=''" class="w-3 h-3 bg-purple-700 rounded-full mx-2"></div>
+                    <div v-if="coin.doxxed_link!=''" class="w-3 h-3 bg-pink-500 rounded-full mx-1"></div>
                   </div>
                 </td>
-                <td class="text-green-500 text-left text-sm">8.0/10</td>
-                <td class="text-left text-sm">25 Oct 2021</td>
+                <td class="text-green-500 text-center text-sm">8.0/10</td>
+                <td class="text-center text-sm">25 Oct 2021</td>
                 <td>
-                  <div class="bg-green-600 rounded-sm flex justify-center text-white"><p>Presale</p></div>
+                  <div class="bg-green-600 rounded-sm flex justify-center text-white">Presale</div>
                 </td>
                 <td class="text-green-500 text-center text-sm">8.6/10</td>
-              </tr>
-              <tr class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-                <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-left text-sm">Shiba Watch</td>
-                <td class="text-left">N.A.</td>
-                <td class="text-red-500 text-left text-sm">3.4/10</td>
-                <td class="text-left text-sm">25 Oct 2021</td>
-                <td>
-                  <div class="bg-green-600 rounded-sm flex justify-center text-white"><p>Presale</p></div>
-                </td>
-                <td class="text-green-500 text-center text-sm">2/10</td>
-              </tr>
-              <tr class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-                <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-left text-sm">Shiba Watch</td>
-                <td>
-                  <div class="flex justify-left">
-                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
-                </td>
-                <td class="text-yellow-500 text-left text-sm">6.4/10</td>
-                <td class="text-left text-sm">25 Oct 2021</td>
-                <td>
-                  <div class="bg-yellow-600 rounded-sm flex justify-center text-white"><p>Launched</p></div>
-                </td>
-                <td class="text-yellow-500 text-center text-sm">6/10</td>
-              </tr>
-              <tr class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-                <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-left text-sm">Shiba Watch</td>
-                <td>
-                  <div class="flex justify-left">
-                    <div class="w-3 h-3 bg-purple-700 rounded-full"></div>
-                  </div>
-                </td>
-                <td class="text-green-600 text-left text-sm">9.0/10</td>
-                <td class="text-left text-sm">25 Oct 2021</td>
-                <td>
-                  <div class="bg-yellow-600 rounded-sm flex justify-center text-white"><p>Launched</p></div>
-                </td>
-                <td class="text-green-500 text-center text-sm">9.2/10</td>
-              </tr>
-              <tr class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-                <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-left text-sm">Shiba Watch</td>
-                <td>
-                  <div class="flex justify-left">
-                    <div class="w-3 h-3 bg-pink-500 rounded-full"></div>
-                  </div>
-                </td>
-                <td class="text-yellow-500 text-left text-sm">5/10</td>
-                <td class="text-left text-sm">25 Oct 2021</td>
-                <td>
-                  <div class="bg-blue-600 rounded-sm flex justify-center text-white"><p>Private</p></div>
-                </td>
-                <td class="text-yellow-500 text-center text-sm">6.1/10</td>
               </tr>
             </tbody>
           </table>
@@ -163,7 +103,7 @@ import Multiselect from 'vue-multiselect'
 import SvgIcon from '../components/SvgIcon'
 import Leftside from './Leftside'
 import Topside from './Topside'
-
+import axios from "axios"
 export default {
   components: {
     Multiselect,
@@ -175,14 +115,30 @@ export default {
     return {
       value: [],
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
-      }
+      coins:[],
+      searchkey: ""
+    }
+  },
+  async created() {
+    this.getData();
   },
   methods: {
     signin() {
       document.location = '/login';
     },
-    createlist() {
-
+    getData() {
+      // axios.get(`http://localhost:3030/api/list?key=${this.searchkey}` ).then(({data}) => {
+      //   this.coins = data.result;
+      // });
+      axios({
+        method: 'post',
+        url: 'http://localhost:3030/api/list',
+        data: {
+          key: this.searchkey
+        }
+      }).then(({data}) => {
+        this.coins = data.result;
+      });
     }
   }
 }

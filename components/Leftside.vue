@@ -2,7 +2,7 @@
   <div class="col-start-1 col-end-2 bg-white mt-20 mb-10 px-5 rounded-tr-lg rounded-br-lg shadow-md sticky">
       <img class="absolute -mt-12" src="../assets/LOGO1.png" alt="">
       <div class="mt-20">
-        <button class="accordion" @click="select">
+        <button class="accordion" ref="drop1" @click="select(1)">
           <div class="flex justify-between">
             <p>TokenRelated</p>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +21,7 @@
         OTHER FUNCTIONS
       </div>
       <div class="mt-5">
-        <button class="accordion" @click="select">
+        <button class="accordion" ref="drop2" @click="select(2)">
           <div class="flex justify-between">
             <p>Stake and Lend</p>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,22 +42,10 @@
 <script>
   export default {
     methods: {
-      select() {
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-            panel.style.display = "none";
-          } else {
-            panel.style.display = "block";
-          }
-        });
+      select(num) {
+        if(num==1) {this.$refs.drop1.nextElementSibling.style.display= this.$refs.drop1.nextElementSibling.style.display=="block"? "none": "block";}
+        else {this.$refs.drop2.nextElementSibling.style.display= this.$refs.drop2.nextElementSibling.style.display=="block"? "none": "block";}
       }
-    }
     }
   }
 </script>
