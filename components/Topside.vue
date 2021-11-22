@@ -27,22 +27,35 @@ export default {
       web3Obj: new Web3(Web3.givenProvider || 'https://bsc-dataseed.binance.org'),
       busdBalance: 0,
       shibaBalance: 0,
-      shibaContractAddress: "0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff",
+      shibaContractAddress: '0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff',
       shibaContract: null,
-      shibaAbi: ShibaJson.abi
+      shibaAbi: ShibaJson.abi,
+      networkId: "1"
     }
   },
   async created() {
     this.web3Obj.eth.getAccounts().then((result)=>{
       if(result.length>0) this.account = result[0];
     })
-    //console.log(this.web3Obj.currentProvider);
-    // this.shibaContract = new this.web3Obj.eth.Contract(this.shibaAbi,this.shibaContractAddress);
-    // console.log(this.shibaContract);
-    //console.log(this.shibaContract);
-
+    this.web3Obj.eth.net.getId().then((result)=>{
+      console.log(result);
+      this.networkChanged(result)
+    });
   },
   methods: {
+    async networkChanged(networkId){
+      this.networkId = networkId;
+      console.log("----------------------");
+      console.log(this.networkId);
+      console.log("++++++++++++++++++++++");
+      if(networkId==56){
+        this.web3Obj = new Web3('https://bsc-dataseed.binance.org');
+        this.shibaContract = new this.web3Obj.eth.Contract(this.shibaAbi,Web3.utils.toChecksumAddress("0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246FF"));
+        console.log(this.shibaContract.methods);
+      } else {
+        await this.switchNetwork();
+      }
+    },
     signin() {
       //console.log();
       document.location = '/login';
@@ -52,7 +65,13 @@ export default {
         console.log("result="+result)
         document.location.reload();
       });
-    }
+    },
+    async switchNetwork(){
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: "0x38" }],
+      });
+    },
   }
 }
 

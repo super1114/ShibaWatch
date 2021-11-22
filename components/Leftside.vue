@@ -14,7 +14,11 @@
           <div class="mt-3 hover:text-blue-600"><a href="/">Listings</a></div>
           <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
           <div class="mt-3 hover:text-blue-600"><a href="#">KYC</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="/listingdetails">ShibaWatch SWAP</a></div>
+          <div class="mt-3 hover:text-blue-600">
+            <a href="https://pancakeswap.finance/swap?outputCurrency=0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff" target="_blank">
+              ShibaWatch SWAP
+            </a>
+          </div>
         </div>
       </div>
       <div class="mt-5 text-gray-500 font-semibold text-sm">
