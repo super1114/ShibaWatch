@@ -88,7 +88,7 @@
             <p class="text-xl font-semibold ml-5">BUSD Contract</p>
           </div>
           <div class="flex ml-10 mb-2">
-            <p class="text-gray-500">0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff</p>
+            <p class="text-gray-500">0xe9e7cea3dedca5984780bafc599bd69add087d56</p>
             <SvgIcon text="busd_copy" />
           </div>
         </div>

@@ -20,7 +20,7 @@
                 <button class="flex items-center justify-center pl-2 bg-white">
                     <SvgIcon text="search" />
                 </button>
-                <input type="text" class="px-2 py-2 w-80 focus:outline-none" v-model="searchkey" placeholder="Search...">
+                <input v-on:keyup.enter="getData" type="text" class="px-2 py-2 w-80 focus:outline-none" v-model="searchkey" placeholder="Search...">
             </div>
           </div>
           <div class="flex justify-between">
@@ -46,35 +46,42 @@
                 <th class="text-center text-gray-800 font-semibold text-sm">SHIBA RATING</th>
               </tr>
             </thead>
-            <tbody class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-              <tr v-for="coin in coins" :key="coin.id" class="border-b-2 bg-white border-gray-300 border-t-2 border-gray-300">
-                <td class="flex justify-center"><img src="../assets/photo.jpg" alt=""></td>
-                <td class="text-center text-sm">{{coin.name}}</td>
-                <td>
+            <tbody class="border-b-2 bg-white border-gray-300 border-t-2">
+              <tr v-if="coins.length==0" class="border-b-2 bg-white border-gray-300 border-t-2">
+                <td class="text-center text-sm" colspan="7">
+                  No coins find.
+                </td>
+              </tr>
+              <tr v-else v-for="index in 5" :key="index" class="border-b-2 bg-white border-gray-300 border-t-2">
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="flex justify-center py-1"><img :src="'http://localhost:3030/api/image_view/'+coins[curPage*5+index-1].image" class="w-8"
+                ></td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-center text-sm">{{coins[curPage*5+index-1].name}}</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'">
+                  <div v-if="coins[curPage*5+index-1].audit_link==''&&coins[curPage*5+index-1].doxxed_link==''&&coins[curPage*5+index-1].kyc_link==''" class="text-center">N.A.</div>
                   <div class="flex justify-center">
-                    <div v-if="coin.audit_link!=''" class="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <div v-if="coin.kyc_link!=''" class="w-3 h-3 bg-purple-700 rounded-full mx-2"></div>
-                    <div v-if="coin.doxxed_link!=''" class="w-3 h-3 bg-pink-500 rounded-full mx-1"></div>
+                    <div v-if="coins[curPage*5+index-1].audit_link!=''" class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div v-if="coins[curPage*5+index-1].kyc_link!=''" class="w-3 h-3 bg-purple-700 rounded-full mx-2"></div>
+                    <div v-if="coins[curPage*5+index-1].doxxed_link!=''" class="w-3 h-3 bg-pink-500 rounded-full mx-1"></div>
                   </div>
                 </td>
-                <td class="text-green-500 text-center text-sm">8.0/10</td>
-                <td class="text-center text-sm">25 Oct 2021</td>
-                <td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-green-500 text-center text-sm">8.0/10</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-center text-sm">{{new Date(coins[curPage*5+index-1].uploaded_date).toLocaleDateString()}}</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'">
                   <div class="bg-green-600 rounded-sm flex justify-center text-white">Presale</div>
                 </td>
-                <td class="text-green-500 text-center text-sm">8.6/10</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-green-500 text-center text-sm">8.6/10</td>
               </tr>
             </tbody>
           </table>
           <div class="flex justify-between mt-5 mx-5 pb-5">
             <div class="flex">
-              <div class="w-7 h-6 bg-gray-300 text-center text-blue-500 cursor-pointer">
+              <div class="w-7 h-6 bg-gray-300 text-center text-blue-500 cursor-pointer" @click="prevPage">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
               </div>
-              <p class="mx-2 text-sm text-gray-500">1-5 of 5</p>
-              <div class="w-7 h-6 bg-gray-300 text-blue-500 cursor-pointer">
+              <p class="mx-2 text-sm text-gray-500">{{startCount}}-{{endCount}} of {{coins.length}}</p>
+              <div class="w-7 h-6 bg-gray-300 text-blue-500 cursor-pointer" @click="nextPage">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -82,15 +89,6 @@
             </div>
             <div class="flex">
               <p class="mx-10 text-sm text-gray-500">Rows per page: <span class="text-black">5</span></p>
-              <p class="mx-10 text-sm text-gray-500">1-5 of 5</p>
-              <p class="flex mt-1 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
             </div>
           </div>
       </div>
@@ -111,12 +109,26 @@ export default {
     Leftside,
     Topside
   },
+  computed: {
+    pageCount() {
+      return Math.round(this.coins.length / 5)
+    },
+    startCount() {
+      if(this.coins.length==0) return 0;
+      return this.curPage*5+1;
+    },
+    endCount(){
+      if(this.coins.length == 0) return 0;
+      return (this.curPage+1)*5 > this.coins.length ? this.coins.length : (this.curPage+1)*5
+    }
+  },
   data() {
     return {
       value: [],
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
       coins:[],
-      searchkey: ""
+      searchkey: "",
+      curPage: 0
     }
   },
   async created() {
@@ -127,9 +139,6 @@ export default {
       document.location = '/login';
     },
     getData() {
-      // axios.get(`http://localhost:3030/api/list?key=${this.searchkey}` ).then(({data}) => {
-      //   this.coins = data.result;
-      // });
       axios({
         method: 'post',
         url: 'http://localhost:3030/api/list',
@@ -137,8 +146,17 @@ export default {
           key: this.searchkey
         }
       }).then(({data}) => {
+        this.curPage = 0;
         this.coins = data.result;
       });
+    },
+    nextPage() {
+      if(5*(this.curPage+1)>=this.coins.length) return;
+      this.curPage++;
+    },
+    prevPage() {
+      if(this.curPage==0) return;
+      this.curPage--;
     }
   }
 }

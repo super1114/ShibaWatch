@@ -172,7 +172,7 @@
           </div>
           <button type="button" class="mt-10 bg-purple-700 hover:bg-purple-800 rounded-md py-3 px-6 text-white focus:outline-none">Add Link</button>
           <div class="flex mt-10">
-            <input type="radio" class="mt-2">
+            <input type="radio" class="mt-2" :checked="agreeTerms" @change="changeAgree">
             <p class="mx-2">I agree to the <span class="text-blue-500 cursor-pointer">Terms and Conditions*</span></p>
           </div>
           <button type="button" class="mt-10 mb-10 bg-purple-700 hover:bg-purple-800 rounded-md py-3 px-6 text-white focus:outline-none" @click="submitCoin">Submit Coin</button>
@@ -218,14 +218,25 @@ export default {
       value: [],
       chain: [],
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
-      chain_option: ['Ethereum', 'BSC', 'Polygon']
+      chain_option: ['Ethereum', 'BSC', 'Polygon'],
+      agreeTerms:false
     }
   },
   methods: {
+    changeAgree() {
+      this.agreeTerms = !this.agreeTerms;
+    },
     changeFile(event) {
       this.file = event.target.files[0];
     },
     async submitCoin() {
+      if(!this.agreeTerms) {
+        alert("You need to agree Terms and Conditions")
+        return;
+      }if(this.name==""||this.sym=="") {
+        alert("Coin name and symbol is required");
+        return;
+      }
       let formdata = new FormData();
       formdata.append("name", this.name);
       formdata.append("symbol", this.sym);
@@ -253,9 +264,6 @@ export default {
         alert(data.message);
         document.location = "/";
       }
-    },
-    signin() {
-      document.location = '/login';
     },
     presale_yes() {
       this.presale = false;
