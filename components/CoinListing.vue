@@ -97,14 +97,12 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 import SvgIcon from '../components/SvgIcon'
 import Leftside from './Leftside'
 import Topside from './Topside'
 import axios from "axios"
 export default {
   components: {
-    Multiselect,
     SvgIcon,
     Leftside,
     Topside
@@ -135,9 +133,6 @@ export default {
     this.getData();
   },
   methods: {
-    signin() {
-      document.location = '/login';
-    },
     getData() {
       axios({
         method: 'post',
@@ -160,9 +155,4 @@ export default {
     }
   }
 }
-
 </script>
-
-<style>
-
-</style>

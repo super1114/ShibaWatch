@@ -22,13 +22,13 @@
                 <div class="bg-white -mt-10 float-right">
                   <img src="../assets/photo.jpg" class="rounded-full" alt="">
                 </div>
-                <p>100,234,344,100</p>
+                <p>${{this.shibaBalance()}}</p>
               </div>
               <div class="bg-yellow-600 text-gray-700 py-6 px-2 mr-10 rounded">
                 <div class="bg-white -mt-10 float-right">
                   <img src="../assets/busd.png" class="rounded-full" alt="">
                 </div>
-                <p class="mx-10">$499.73</p>
+                <p class="mx-10">${{this.busdBalance()}}</p>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@
                   <div class="bg-white -mt-10 float-right -mr-6">
                     <img src="../assets/busd.png" class="rounded-full" alt="">
                   </div>
-                  <p class="mx-4">$1.63</p>
+                  <p class="mx-4">$0</p>
                 </div>
               </div>
               <div>
@@ -56,7 +56,7 @@
                   <div class="bg-white -mt-10 float-right">
                     <img src="../assets/busd.png" class="rounded-full" alt="">
                   </div>
-                  <p class="mx-10">$200.66</p>
+                  <p class="mx-10">$0</p>
                 </div>
               </div>
             </div>
@@ -98,101 +98,38 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 import SvgIcon from './SvgIcon';
 import Leftside from './Leftside'
 import Topside from './Topside'
 
 export default {
   components: {
-    Multiselect,
     SvgIcon,
     Leftside,
     Topside
-},
+  },
   data() {
     return {
       value: [],
-      options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
-      }
+    }
   },
   methods: {
-    signin() {
-      document.location = '/login';
-    },
-    select() {
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-            panel.style.display = "none";
-          } else {
-            panel.style.display = "block";
-          }
-        });
+    shibaBalance() {
+      if(process.client) {
+        return localStorage.getItem("shibaBalance") ? localStorage.getItem("shibaBalance") : "SHIBAW Balance";
+      }else {
+        return 0;
       }
     },
-    createlist() {
+    busdBalance() {
+      if(process.client) {
+        return localStorage.getItem("busdBalance") ? localStorage.getItem("busdBalance") : "BUSD Balance";
 
+      }else {
+        return 0;
+      }
     }
   }
 }
 
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-button[disabled="disabled"]{
-  cursor: not-allowed;
-  opacity: 0.8;
-}
-button.vsa-item__trigger {
-  width: 100%;
-}
-div.leftbox {
-  box-shadow:
-  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-  0 12.5px 10px rgba(0, 0, 0, 0.06);
-}
-
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 5px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 20px;
-  font: bold;
-  transition: 0.4s;
-}
-.active, .accordion:hover {
-  background-color: #ccc;
-  color: blue;
-  outline: none;
-}
-
-.panel {
-  color:#a0aec0;
-  padding: 0 18px;
-  display: none;
-  background-color: white;
-  overflow: hidden;
-}
-</style>
