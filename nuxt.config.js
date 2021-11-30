@@ -3,6 +3,7 @@ export default {
   /*
    ** Headers of the page
    */
+  target: 'static',
   head: {
     title: 'Shiba Watch',
     meta: [
