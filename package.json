@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "start": "serve -s build",
     "generate": "nuxt generate",
     "test": "jest",
     "test:dev": "jest --watch"
@@ -24,6 +24,7 @@
     "fs-extra": "^10.0.0",
     "nuxt": "^2.14.3",
     "nuxt-svg-loader": "^1.2.0",
+    "serve": "^13.0.2",
     "time-difference-js": "^1.0.1",
     "vue-metamask": "^2.1.0",
     "vue-multiselect": "^2.1.6",
