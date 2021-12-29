@@ -1,47 +1,69 @@
-# [Tailwind Toolbox](https://www.tailwindtoolbox.com/) - [Nuxt Version of Landing Page Template](https://www.tailwindtoolbox.com/templates/landing-page)
-
-> [LIVE DEMO](https://tailwind-landing-page-nuxt.netlify.com/)
-
-[Nuxt Version Landing Page](https://www.tailwindtoolbox.com/templates/landing-page) is an open source landing page template for [Tailwind CSS](https://tailwindcss.com/) specificly for the [Nuxt.js](https://nuxtjs.org/) framework created by [Vannsl](https://github.com/Vannsl) for the [Tailwind Toolbox](https://www.tailwindtoolbox.com/).
-
-![Landing Page](https://www.tailwindtoolbox.com/templates/landing-page.png)
+# AnotherApp
 
 ## Build Setup
 
 ```bash
 # install dependencies
-$ npm install
+$ yarn install
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ yarn dev
 
 # build for production and launch server
-$ npm run build
-$ npm run start
+$ yarn build
+$ yarn start
 
 # generate static project
-$ npm run generate
+$ yarn generate
 ```
 
-## Test Coverage
-| File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s |
-| ----------------------- | ------- | -------- | ------- | ------- | ----------------- |
-| All files               | 100     | 100      | 100     | 100     |                   |
-| components              | 100     | 100      | 100     | 100     |                   |
-| CallToAction.vue        | 100     | 100      | 100     | 100     |                   |
-| CallToActionContent.vue | 100     | 100      | 100     | 100     |                   |
-| FeatureLeft.vue         | 100     | 100      | 100     | 100     |                   |
-| FeatureRight.vue        | 100     | 100      | 100     | 100     |                   |
-| Features.vue            | 100     | 100      | 100     | 100     |                   |
-| Hero.vue                | 100     | 100      | 100     | 100     |                   |
-| HeroContent.vue         | 100     | 100      | 100     | 100     |                   |
-| Logo.vue                | 100     | 100      | 100     | 100     |                   |
-| Price.vue               | 100     | 100      | 100     | 100     |                   |
-| PriceHighlighted.vue    | 100     | 100      | 100     | 100     |                   |
-| Prices.vue              | 100     | 100      | 100     | 100     |                   |
-| TeaserColumn.vue        | 100     | 100      | 100     | 100     |                   |
-| Teasers.vue             | 100     | 100      | 100     | 100     |                   |
-| TheFooter.vue           | 100     | 100      | 100     | 100     |                   |
-| TheHeader.vue           | 100     | 100      | 100     | 100     |                   |
-| pages                   | 100     | 100      | 100     | 100     |                   |
-| index.vue               | 100     | 100      | 100     | 100     |                   |
+For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+
+## Special Directories
+
+You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+
+### `assets`
+
+The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+
+### `components`
+
+The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+
+### `layouts`
+
+Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+
+
+### `pages`
+
+This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+
+### `plugins`
+
+The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+
+### `static`
+
+This directory contains your static files. Each file inside this directory is mapped to `/`.
+
+Example: `/static/robots.txt` is mapped as `/robots.txt`.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+
+### `store`
+
+This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+
+More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).

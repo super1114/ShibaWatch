@@ -1,14 +1,14 @@
 <template>
-  <div class="grid grid-cols-4 bg-gray-200 w-full h-full relative">
+  <div v-if="!this.loading" class="bg-gray-200 w-full h-full relative" :class="is_mobile?'block':'grid grid-cols-4'">
     <Leftside />
-    <div class="col-start-2 col-end-5 border-2 border-gray-200">
+    <div :class="this.is_mobile?'col-span-4':'col-span-3'">
       <Topside />
       <div class="bg-white ml-5 mr-10 mt-10 mb-10 rounded-md px-10">
         <div class="py-10">
-          <p class="font-bold text-3xl">Submit new coin</p>
-          <p>Please fill out this form carefully to add new coin to <span class="text-blue-500">CoinSniper</span>.After submission, your coin will be visible on the <span class="text-blue-500">New Listings</span> page.Get 500 votes to be officially listed on <span class="text-blue-500">CoinSniper</span>.</p>
+          <p class="font-bold text-2xl" :class="this.is_mobile?'text-center':''">Submit new coin</p>
+          <p :class="this.is_mobile?'text-center':''">Please fill out this form to add a coin listing for review by the Shiba Watch team.</p>
         </div>
-        <div  class="grid grid-cols-4 gap-10">
+        <div  :class="this.is_mobile?'block':'grid grid-cols-4 gap-10'">
           <div v-if="!file" class="col-start-1 col-end-2">
             <p class="text-2xl">Upload Logo*</p>
             <input type="file" ref="file" style="display: none" @change="changeFile">
@@ -37,7 +37,8 @@
             </div>
             <div class="mt-6">
               <p class="text-xl text-gray-700">Network/Chain</p>
-              <Multiselect v-model="chain" :options="chain_option" class="placeholder-opacity-100 cursor-pointer " :multiple="false" placeholder="Binance Smart Chain(BSC)"></Multiselect>
+              <input type="text" v-model="chain" class="px-2 mt-2 rounded-md w-full bg-gray-100 border-2 border-gray-300 py-2 focus:outline-none placeholder-opacity-100" placeholder="CHAIN">
+              <!-- <Multiselect v-model="chain" :options="chain_option" class="placeholder-opacity-100 cursor-pointer " :multiple="false" placeholder="Binance Smart Chain(BSC)"></Multiselect> -->
             </div>
           </div>
         </div>
@@ -59,7 +60,7 @@
               </div>
               <div class="mt-5 text-lg">
                 <p>Description*</p>
-                <textarea rows="3" class="px-2 form-area mt-2 rounded-md w-full bg-gray-100 border-2 border-gray-300 focus:outline-none placeholder-opacity-100" placeholder="Describe your token here in detail."></textarea>
+                <textarea rows="3" v-model="desc" class="px-2 form-area mt-2 rounded-md w-full bg-gray-100 border-2 border-gray-300 focus:outline-none placeholder-opacity-100" placeholder="Describe your token here in detail."></textarea>
               </div>
             </div>
             <div v-else>
@@ -216,11 +217,22 @@ export default {
       kyc: false,
       dox: false,
       value: [],
-      chain: [],
+      chain: "",
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
       chain_option: ['Ethereum', 'BSC', 'Polygon'],
-      agreeTerms:false
+      agreeTerms:false,
+      is_mobile:false,
+      loading: true,
     }
+  },
+  mounted() {
+    if(window.innerWidth<1024) {
+      this.is_mobile = true;
+    }
+    this.loading= false;
+  },
+  created() {
+
   },
   methods: {
     changeAgree() {
@@ -234,7 +246,7 @@ export default {
         alert("You need to agree Terms and Conditions")
         return;
       }if(this.name==""||this.sym=="") {
-        alert("Coin name and symbol is required");
+        alert("Name and Symbol is required option.");
         return;
       }
       let formdata = new FormData();
@@ -255,13 +267,13 @@ export default {
       formdata.append("telegram", this.telegram);
       formdata.append("twitter", this.twitter);
       formdata.append("additional_link", this.additional_link);
-      const { data } = await axios.post('http://localhost:3030/api/create_coin',formdata,{
+      const { data } = await axios.post('https://api.shibawatch.net/api/create_coin',formdata,{
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       if(data.status==true) {
-        alert(data.message);
+        alert("Your token was submitted to the Shiba Watch admin team. Please allow 1-3 business days for review.");
         document.location = "/";
       }
     },

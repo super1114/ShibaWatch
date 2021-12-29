@@ -1,21 +1,21 @@
 <template>
-  <div class="grid grid-cols-4 bg-gray-200 w-screen h-screen relative">
+  <div v-if="!this.loading" class="bg-gray-200 w-screen h-screen relative" :class="is_mobile?'block':'grid grid-cols-4'">
     <Leftside />
-    <div class="col-start-2 col-end-5 border-2 border-gray-200">
+    <div :class="this.is_mobile?'col-span-4':'col-span-3'">
       <Topside />
-      <div class="flex justify-between">
+      <div class="flex justify-between items-center pr-2">
         <div>
           <p class="font-bold mt-3 mx-5 text-3xl">Listings</p>
-          <p class="mx-5 mt-2 font-semibold text-gray-700">We collate and streamline all existing and upcoming coins all in one  listing</p>
+          <p class="pl-5 mt-2 font-semibold text-gray-700">We collate and streamline all existing and upcoming coins all in one  listing</p>
         </div>
-        <div class="flex mt-10 h-10 bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer">
+        <a href="/create" class="flex bg-purple-800 text-white px-2 py-2 rounded-lg cursor-pointer">
           <SvgIcon text="plus" />
-          <a href="/create"><p>Create Listing</p></a>
-        </div>
+          <p :class="this.is_mobile?'hide_sidebar':''">Create Listing</p>
+        </a>
       </div>
-      <div class="bg-white ml-3 mr-10 mt-1 rounded-md">
-        <div class="flex">
-          <div class="flex mt-3 ml-5">
+      <div class="bg-white  mt-1 rounded-md">
+        <div class="mt-3 pt-2" :class="is_mobile?'':'flex'">
+          <div class="flex mt-3 ml-5" :class="is_mobile?'justify-center':''">
             <div class="flex border-2 rounded h-8">
                 <button class="flex items-center justify-center pl-2 bg-white">
                     <SvgIcon text="search" />
@@ -23,7 +23,7 @@
                 <input v-on:keyup.enter="getData" type="text" class="px-2 py-2 w-80 focus:outline-none" v-model="searchkey" placeholder="Search...">
             </div>
           </div>
-          <div class="flex justify-between">
+          <div class="flex justify-center">
             <div class="flex">
               <div class="w-3 h-3 rounded-full bg-green-500 mt-6 mx-3"></div>
               <p class="mt-5 -mx-2 text-xs">Audited</p>
@@ -40,10 +40,10 @@
                 <th class="invisible bg-gray-300">avatar</th>
                 <th class="text-center text-gray-800 font-semibold text-sm">NAME</th>
                 <th class="text-center text-gray-800 font-semibold text-sm">METRICS</th>
-                <th class="text-center text-gray-800 font-semibold text-sm">SOCIAL MEDIA STRENGTH</th>
-                <th class="text-center text-gray-800 font-semibold text-sm">UPLOADED DATE</th>
-                <th class="text-center text-gray-800 font-semibold text-sm">STATUS</th>
-                <th class="text-center text-gray-800 font-semibold text-sm">SHIBA RATING</th>
+                <th class="text-center text-gray-800 font-semibold text-sm" :class="this.is_mobile?'hide_sidebar':''">SOCIAL MEDIA STRENGTH</th>
+                <th class="text-center text-gray-800 font-semibold text-sm" :class="this.is_mobile?'hide_sidebar':''">UPLOADED DATE</th>
+                <th class="text-center text-gray-800 font-semibold text-sm" :class="this.is_mobile?'hide_sidebar':''">STATUS</th>
+                <th class="text-center text-gray-800 font-semibold text-sm">TOKEN RATING</th>
               </tr>
             </thead>
             <tbody class="border-b-2 bg-white border-gray-300 border-t-2">
@@ -52,9 +52,11 @@
                   No coins find.
                 </td>
               </tr>
-              <tr v-else v-for="index in 5" :key="index" class="border-b-2 bg-white border-gray-300 border-t-2">
-                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="flex justify-center py-1"><img :src="'http://localhost:3030/api/image_view/'+coins[curPage*5+index-1].image" class="w-8"
-                ></td>
+              <tr v-else v-for="index in 5" :key="index" class="border-b-2 bg-white border-gray-300 border-t-2" @click="gotoDetail(coins[curPage*5+index-1])">
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="flex justify-center py-1">
+                  <img :src="'https://api.shibawatch.net/api/image_view/'+coins[curPage*5+index-1].image" class="w-10 h-10"
+                  >
+                </td>
                 <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-center text-sm">{{coins[curPage*5+index-1].name}}</td>
                 <td v-if="typeof coins[curPage*5+index-1]!='undefined'">
                   <div v-if="coins[curPage*5+index-1].audit_link==''&&coins[curPage*5+index-1].doxxed_link==''&&coins[curPage*5+index-1].kyc_link==''" class="text-center">N.A.</div>
@@ -64,12 +66,14 @@
                     <div v-if="coins[curPage*5+index-1].doxxed_link!=''" class="w-3 h-3 bg-pink-500 rounded-full mx-1"></div>
                   </div>
                 </td>
-                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-green-500 text-center text-sm">8.0/10</td>
-                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-center text-sm">{{new Date(coins[curPage*5+index-1].uploaded_date).toLocaleDateString()}}</td>
-                <td v-if="typeof coins[curPage*5+index-1]!='undefined'">
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-green-500 text-center text-sm" :class="is_mobile?'hide_sidebar':''">{{coins[curPage*5+index-1].social}}</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" :class="is_mobile?'hide_sidebar':''" class="text-center text-sm">{{new Date(coins[curPage*5+index-1].uploaded_date).toLocaleDateString()}}</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" :class="is_mobile?'hide_sidebar':''">
                   <div class="bg-green-600 rounded-sm flex justify-center text-white">Presale</div>
                 </td>
-                <td v-if="typeof coins[curPage*5+index-1]!='undefined'" class="text-green-500 text-center text-sm">8.6/10</td>
+                <td v-if="typeof coins[curPage*5+index-1]!='undefined'"  class="text-green-500 text-center text-sm">
+                  {{coins[curPage*5+index-1].token_score}}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -95,7 +99,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import SvgIcon from '../components/SvgIcon'
 import Leftside from './Leftside'
@@ -126,17 +129,30 @@ export default {
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
       coins:[],
       searchkey: "",
-      curPage: 0
+      curPage: 0,
+      is_mobile:false,
+      loading:true
     }
   },
+  mounted() {
+    if(window.innerWidth<1024) {
+      this.is_mobile = true;
+    }
+    this.loading = false;
+  },
   async created() {
+    if (process.client) {
+      if(window.innerWidth<1024) {
+        this.is_mobile = true;
+      }
+    }
     this.getData();
   },
   methods: {
     getData() {
       axios({
         method: 'post',
-        url: 'http://localhost:3030/api/list',
+        url: 'https://api.shibawatch.net/api/list',
         data: {
           key: this.searchkey
         }
@@ -152,7 +168,15 @@ export default {
     prevPage() {
       if(this.curPage==0) return;
       this.curPage--;
+    },
+    gotoDetail(tr) {
+      document.location = "/detail/"+tr.id;
     }
   }
 }
 </script>
+<style>
+  .hide_sidebar {
+    display: none;
+  }
+</style>

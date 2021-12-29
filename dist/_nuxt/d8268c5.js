@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[19],{1201:function(t,n,e){"use strict";e.r(n);var l={components:{ListingDetails:e(374).default}},o=e(45),component=Object(o.a)(l,(function(){var t=this.$createElement;return(this._self._c||t)("ListingDetails")}),[],!1,null,null,null);n.default=component.exports;installComponents(component,{ListingDetails:e(374).default})}}]);

@@ -1,63 +1,68 @@
 <template>
-  <div class="col-start-1 col-end-2 bg-white mt-20 mb-10 px-5 rounded-tr-lg rounded-br-lg shadow-md sticky">
-      <img class="absolute -mt-12" src="../assets/LOGO1.png" alt="">
-      <div class="mt-20">
-        <button class="accordion" ref="drop1" @click="select(1)">
-          <div class="flex justify-between">
-            <p>TokenRelated</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="/">Listings</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">KYC</a></div>
-          <div class="mt-3 hover:text-blue-600">
-            <a href="https://pancakeswap.finance/swap?outputCurrency=0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff" target="_blank">
-              ShibaWatch SWAP
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="mt-5 text-gray-500 font-semibold text-sm">
-        OTHER FUNCTIONS
-      </div>
-      <div class="mt-5">
-        <button class="accordion" ref="drop2" @click="select(2)">
-          <div class="flex justify-between">
-            <p>Stake and Lend</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
-        </button>
-        <div class="panel">
-          <div class="mt-3 hover:text-blue-600"><a href="#">Stake</a></div>
-          <div class="mt-3 hover:text-blue-600"><a href="#">Audit</a></div>
-        </div>
-      </div>
-      <div class="mt-5 font-bold text-gray-700">NFT Marketplace</div>
-      <div class="mt-5 font-bold text-gray-700"><a href="/rewards">Rewards</a></div>
+  <div class="relative">
+    <div :class="this.is_mobile?'hide_sidebar':''" class="col-span-1 bg-white mt-20 mb-10 px-5 rounded-tr-lg rounded-br-lg shadow-md sticky h-full">
+      <a href="/"><img  src="../assets/LOGO1.png" class="-mt-12" alt=""></a>
+
+      <div class="mt-20 font-bold text-gray-700 text-center py-4 hover:bg-gray-200"><a href="/">Listing</a></div>
+      <div class="mt-5 font-bold text-gray-700 text-center py-4 hover:bg-gray-200"><a href="/rewards">Rewards</a></div>
     </div>
+    <div :class="this.is_mobile?'':'hide_sidebar'" class="flex items-center justify-between px-5 py-2 bg-white border-2 border-gray-200 col-span-4">
+        <a href="/"><img src="../assets/LOGO1.png" class="w-40" /></a>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" @click="mobileMenu">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </div>
+    <div :class="is_mobile&&mobile_menu?'':'hidden'" class="absolute right-0 top-0 w-3/4 z-50 h-screen bg-gray-100 border-gray-400 border-2 rounded-md">
+      <div class="">
+        <div class="float-right px-3 py-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" @click="mobileMenu">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="block pt-20">
+          <ul>
+            <li ><a href="/" class="block px-2 py-4 hover:bg-green-500 transition duration-300 text-md text-center">Listing</a></li>
+            <li ><a href="/rewards" class="block px-2 py-4 hover:bg-green-500 transition duration-300 text-md text-center">Rewards</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    data() {
+      return {
+        is_mobile:false,
+        mobile_menu:false
+      }
+    },
+    mounted() {
+      if(window.innerWidth<1024) {
+        this.is_mobile = true;
+      }
+    },
     methods: {
+      mobileMenu() {
+        this.mobile_menu = !this.mobile_menu;
+      },
       select(num) {
-        if(num==1) {this.$refs.drop1.nextElementSibling.style.display= this.$refs.drop1.nextElementSibling.style.display=="block"? "none": "block";}
+        if(num==1&&this.is_mobile) {this.$refs.drop3.nextElementSibling.style.display= this.$refs.drop3.nextElementSibling.style.display=="block"? "none": "block";}
+        if(num==1&&!this.is_mobile) {this.$refs.drop1.nextElementSibling.style.display= this.$refs.drop1.nextElementSibling.style.display=="block"? "none": "block";}
+        if(num==2&&this.is_mobile) {this.$refs.drop4.nextElementSibling.style.display= this.$refs.drop4.nextElementSibling.style.display=="block"? "none": "block";}
         else {this.$refs.drop2.nextElementSibling.style.display= this.$refs.drop2.nextElementSibling.style.display=="block"? "none": "block";}
       }
     }
   }
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;
+}
+.hide_sidebar {
+  display: none;
 }
 
 .fade-enter-from,
@@ -104,4 +109,6 @@ div.leftbox {
   background-color: white;
   overflow: hidden;
 }
+
+
 </style>

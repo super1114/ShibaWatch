@@ -1,94 +1,83 @@
 <template>
-  <div class="grid grid-cols-4 bg-gray-200 w-screen h-full relative">
+  <div class="bg-gray-200 w-screen h-full relative" :class="is_mobile?'block':'grid grid-cols-4'">
     <Leftside />
-    <div class="col-start-2 col-end-5 border-2 border-gray-200">
+    <div class="border-2 border-gray-200" :class="this.is_mobile?'col-span-4':'col-span-3'">
       <Topside />
-      <div class="grid gird-cols-3 gap-4 mt-5">
+      <div :class="this.is_mobile?'block':'grid gird-cols-3 gap-4 mt-5'">
         <div class="col-start-1 col-end-3 ml-3">
           <p class="font-bold text-2xl text-gray-600">Listing Details</p>
           <div class="bg-white pl-5 rounded-md pb-3">
-            <div class="flex">
-              <div class="mt-5">
-                <img src="../assets/star.png" class="rounded-full border-2 border-blue-600" alt="">
-                <img src="../assets/avatar.jpg" class="rounded-full  -mt-3 ml-5" alt="">
+            <div class="flex items-center">
+              <div class="">
+                <img :src="this.coin?`https://api.shibawatch.net/api/image_view/${this.coin.image}`:`../assets/avatar.jpg`" class="rounded-full ml-5 w-10 h-10" alt="">
               </div>
               <div class="ml-4">
                 <div class="flex mt-5">
-                  <p class="font-bold mt-1 text-xl">ShibaWatch</p>
-                  <div class="ml-3 px-3 py-1 rounded-full bg-gray-300 text-blue-500">$SHIBAW</div>
+                  <p class="font-bold mt-1 text-xl">{{this.coin?this.coin.name:'None'}}</p>
+                  <div class="ml-3 px-3 py-1 rounded-full bg-gray-300 text-blue-500">${{this.coin?this.coin.symbol:'None'}}</div>
                 </div>
                 <div class="flex mt-5">
                   <div class="px-3 py-1 rounded-full bg-red-200 text-red-700">Launched</div>
-                  <p class="ml-3 mt-1">This project has launched.</p>
                 </div>
               </div>
             </div>
-            <div class="text-gray-700 flex gap-1 justify-between border-2 border-dashed border-gray-300 bg-gray-200 py-3 px-3 mr-4 rounded-md mt-5">
-              <p class="text-sm mt-1">Status</p>
-              <div class="text-sm px-2 py-1 rounded-full bg-green-200 text-green-500">Listed</div>
-              <p class="text-sm mt-1">Votes for Listing</p>
-              <div class="text-sm px-2 py-1 rounded-full bg-purple-200 text-purple-500">500/500</div>
-              <p class="text-sm mt-1">Votes</p>
-              <div class="text-sm px-2 py-1 rounded-full bg-orange-300 text-orange-500">15452</div>
-              <p class="text-sm mt-1">Votes Today</p>
-              <div class="text-sm px-2 py-1 rounded-full bg-blue-200 text-blue-500">1545</div>
-              <p class="text-sm mt-1">Network</p>
-              <div class="text-sm px-2 py-1 rounded-full bg-gray-500 text-gray-700">BSC</div>
+            <div class="text-gray-700 flex gap-1 justify-center border-2 border-dashed bg-gray-200 py-3 px-3 mr-4 rounded-md mt-5">
+              <div class="text-sm mt-1">Status <span class="text-sm px-2 py-1 rounded-full bg-green-200 text-green-500">Listed</span></div>
+              <div class="text-sm mt-1">Network
+                <span v-if="this.coin&&this.coin.chain!=''" class="text-sm px-2 py-1 rounded-full bg-green-200 text-green-500">
+                  {{this.coin?this.coin.chain:'loading'}}
+                </span>
+                <span v-else class="text-sm px-2 py-1 rounded-full bg-green-200 text-green-500">
+                  NONE
+                </span>
+              </div>
+            </div>
+            <div class="text-gray-700 flex gap-1 justify-center border-2 border-dashed bg-gray-200 py-3 px-3 mr-4 rounded-md mt-5">
+              <div class="text-sm mt-1">Contract
+                <span class="text-sm px-2 py-1 rounded-full bg-green-200 text-green-500">
+                  {{this.coin?this.coin.contract:'loading'}}
+                </span>
+              </div>
             </div>
             <div class="bg-gray-200 border-2 border-gray-300 rounded-md mr-3 mt-5 pl-3 pr-4 pt-2 mb-5 text-gray-500 pb-3">
-              <p>Shiba Watch is a multi-faunctional platform that aims to provide a safe space for investors to invest in. The platform will list upcoming new tokens that are launched or in its early stage.</p>
-              <p>Several metrics will be shown to guide investors on whether the token is safe to invest in. These metrics include social media strength, rating, review and indication of whether the team is KYC verified.</p>
-              <p>When awareness of scams is build, potential investors will be inclined to invest more in cryptocurrency.</p>
-              <p>The next feature of the platform will inculde an NFT marketplace. Users of Shiba Watch platform will be able to mint, purchase and sell their NFTs.</p>
-              <p>Users will be able to stake their tokens in Shiba Watch pools which grants APY (Annual Percentage Yield). The de-fi lending feature will provide flash and micro loans to users</p>
-              <p>and a collateral will have to be placed to ensure lower rate of default.</p>
+              <p v-if="this.coin" class="text-center">{{this.coin.description=='' ? 'No description provided' : this.coin.description}}</p>
+              <p v-else class="text-center">loading</p>
             </div>
           </div>
         </div>
         <div class="col-start-3 col-end-4 mr-2">
-          <p class="font-bold text-2xl text-gray-600">Popularity</p>
-          <div class="bg-white rounded-md">
-            <div class="flex justify-between gap-20">
-              <p class="mt-5 ml-5">WatchLists</p>
-              <SvgIcon text="star" />
-            </div>
-            <div class="mx-5 mt-4 border-b-2 border-gray-400"></div>
-            <div class="text-center mt-5 pb-5">
-              <p class="text-2xl font-bold text-yellow-600">4039</p>
-              <p>WatchLists</p>
-            </div>
-          </div>
+
           <div class="bg-white rounded-md mt-5">
             <div class="flex justify-between gap-20">
               <p class="mt-5 ml-5">Links</p>
               <SvgIcon text="links" />
             </div>
             <div class="mx-5 mt-4 border-b-2 border-gray-400"></div>
-            <div class="ml-5 mt-5 flex">
+            <a v-if="this.coin&&this.coin.website" class="ml-5 mt-5 flex" :href="this.coin?this.coin.website:''" target="_blank">
               <SvgIcon text="website" />
-              <p class="text-sm mt-1 ml-2">Website</p>
+              <span class="text-sm mt-1 ml-2">Website</span>
               <span class="text-sm mr-3 ml-6 mt-1">:</span>
-              <p class="text-sm mt-1 ml-10">Visit website</p>
+              <span class="text-sm mt-1 ml-10" >Visit website</span>
               <SvgIcon text="visit1" />
-            </div>
+            </a>
             <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
-            <div class="ml-5 mt-5 flex">
+            <a v-if="this.coin&&this.coin.telegram" class="ml-5 mt-5 flex" :href="this.coin?this.coin.telegram:''" target="_blank">
               <SvgIcon text="telegram" />
-              <p class="text-sm mt-1 ml-2">Telegram</p>
+              <span class="text-sm mt-1 ml-2">Telegram</span>
               <span class="text-sm mr-3 ml-4 mt-1">:</span>
-              <p class="text-sm mt-1 ml-10">Join Telegram</p>
+              <span class="text-sm mt-1 ml-10">Join Telegram</span>
               <SvgIcon text="visit2" />
-            </div>
+            </a>
             <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
-            <div class="ml-5 mt-5 flex pb-5">
+            <a v-if="this.coin&&this.coin.twitter" class="ml-5 mt-5 flex pb-5" :href="this.coin?this.coin.twitter:''" target="_blank">
               <SvgIcon text="twitter" />
-              <p class="text-sm mt-1 ml-2 mr-1">Twitter</p>
+              <span class="text-sm mt-1 ml-2 mr-1">Twitter</span>
               <span class="text-sm mr-3 ml-6 mt-1">:</span>
-              <p class="text-sm mt-1 ml-10">Follow Twitter</p>
+              <span class="text-sm mt-1 ml-10">Follow Twitter</span>
               <SvgIcon text="visit3" />
-            </div>
+            </a>
           </div>
-          <div class="bg-white rounded-md mt-5 pb-5">
+          <!-- <div class="bg-white rounded-md mt-5 pb-5">
             <div class="flex justify-between gap-20">
               <p class="mt-5 ml-5">Price</p>
               <SvgIcon text="price" />
@@ -114,37 +103,37 @@
               <span class="text-sm mr-3 ml-6 mt-1">:</span>
               <p class="text-sm mt-1 text-blue-500">$600.07</p>
             </div>
-          </div>
-          <div class="bg-white rounded-md mt-5 pb-5">
+          </div> -->
+          <div v-if="this.coin&&(this.coin.chart||this.coin.exchange)" class="bg-white rounded-md mt-5 pb-5">
             <div class="flex justify-between gap-20">
               <p class="mt-5 ml-5">Charts/Swap</p>
               <SvgIcon text="charts_swap" />
             </div>
             <div class="mx-5 mt-4 border-b-2 border-gray-400"></div>
-            <div class="ml-5 mt-5 flex">
+            <a v-if="this.coin&&this.coin.exchange" class="ml-5 mt-5 flex" :href="this.coin?this.coin.exchange:''" target="_blank">
               <SvgIcon text="marketcap" />
-              <p class="text-sm mt-1 ml-2">Coin Marketcap</p>
+              <span class="text-sm mt-1 ml-2">Exchange</span>
               <span class="text-sm mr-3 ml-6 mt-1">:</span>
-              <p class="text-sm mt-1">CoinMarketCap</p>
+              <span class="text-sm mt-1">Visit Exchange</span>
               <SvgIcon text="visit4" />
-            </div>
+            </a>
             <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
-            <div class="ml-5 mt-5 flex">
+            <a v-if="this.coin&&this.coin.chart" class="ml-5 mt-5 flex" :href="this.coin?this.coin.chart:''" target="_blank">
               <SvgIcon text="charts" />
-              <p class="text-sm mt-1 ml-2 mr-1">Charts</p>
+              <span class="text-sm mt-1 ml-2 mr-1">Charts</span>
               <span class="text-sm mr-3 ml-20 mt-1">:</span>
-              <p class="text-sm mt-1 mr-1">View Charts</p>
+              <span class="text-sm mt-1 mr-1">View Charts</span>
               <SvgIcon text="visit5" />
-            </div>
+            </a>
             <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
-            <div class="ml-5 mt-5 flex">
+            <!-- <div class="ml-5 mt-5 flex">
               <SvgIcon text="buynow" />
               <p class="text-sm mt-1 ml-2 -mr-3">Buy Now</p>
               <span class="text-sm mr-3 ml-20 mt-1">:</span>
               <p class="text-sm mt-1 mr-5">Buy Now</p>
               <SvgIcon text="visit6" />
-            </div>
-            <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
+            </div> -->
+            <!-- <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
             <div class="ml-5 mt-5 flex">
               <SvgIcon text="buynow" />
               <p class="text-sm mt-1 ml-2 -mr-3">Buy Now</p>
@@ -154,7 +143,7 @@
                 <p class="ml-3">Flooze.Trade</p>
                 <SvgIcon text="flooze" />
               </button>
-            </div>
+            </div> -->
           </div>
           <div class="bg-white rounded-md mt-5 mb-4 pb-5">
             <div class="flex justify-between gap-20">
@@ -166,14 +155,14 @@
               <SvgIcon text="added" />
               <p class="text-sm mt-1 ml-2">Added</p>
               <span class="text-sm mr-3 ml-6 mt-1">:</span>
-              <p class="text-sm mt-1 text-blue-500">Obtober 27 2021</p>
+              <p class="text-sm mt-1 text-blue-500">{{this.coin?new Date(this.coin.uploaded_date).toLocaleDateString():''}}</p>
             </div>
             <div class="border-b-2 border-gray-200 mx-5 mt-2"></div>
             <div class="ml-5 mt-5 flex">
               <SvgIcon text="launch" />
               <p class="text-sm mt-1 ml-2">Launch</p>
               <span class="text-sm mr-3 ml-5 mt-1">:</span>
-              <p class="text-sm mt-1 text-blue-500">October 27 2021</p>
+              <p class="text-sm mt-1 text-blue-500">{{this.coin?new Date(this.coin.launch_date).toLocaleDateString():''}}</p>
             </div>
           </div>
         </div>
@@ -183,53 +172,44 @@
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 import SvgIcon from '../components/SvgIcon'
 import Leftside from './Leftside'
 import Topside from './Topside'
+import axios from "axios"
 
 export default {
   components: {
-    Multiselect,
     SvgIcon: SvgIcon,
     Leftside: Leftside,
     Topside: Topside
+  },
+  props:{
+    id:Number
   },
   data() {
     return {
       value: [],
       options: ['Listings', 'Audit', 'KYC', 'ShibaWatch Swap'],
-      }
+      is_mobile: false,
+      coin: {}
+    }
+  },
+  mounted() {
+    if(window.innerWidth<1024) {
+      this.is_mobile = true;
+    }
+  },
+  async created() {
+    const {data} = await axios(`https://api.shibawatch.net/api/detail/${this.id}`);
+    console.log(data.result);
+    if(data.result.length>0) this.coin = data.result[0];
   },
   methods: {
-    signin() {
-      document.location = '/login';
-    },
-    select() {
-      var acc = document.getElementsByClassName("accordion");
-      var i;
 
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function() {
-          this.classList.toggle("active");
-          var panel = this.nextElementSibling;
-          if (panel.style.display === "block") {
-            panel.style.display = "none";
-          } else {
-            panel.style.display = "block";
-          }
-        });
-      }
-    },
-    createlist() {
-
-    }
   }
 }
-
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 .fade-enter-active,
 .fade-leave-active {

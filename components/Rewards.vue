@@ -1,11 +1,11 @@
 <template>
-  <div class="grid grid-cols-4 bg-gray-200 w-screen h-full relative">
+  <div v-if="!this.loading" class="bg-gray-200 w-screen h-full relative" :class="is_mobile?'block':'grid grid-cols-4'">
     <Leftside />
-    <div class="col-start-2 col-end-5 border-2 border-gray-200">
-      <div class="w-full bg-white -mx-2 flex justify-between border-2 border-gray-300">
+    <div :class="this.is_mobile?'col-span-4':'col-span-3'">
+      <div class="w-full bg-white flex justify-between border-2 border-gray-300">
         <div></div>
         <div class="flex">
-          <a v-if="!web3Injected" target="_blank" href="https://metamask.io/" class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer" >Install Metamask</a>
+          <div v-if="!web3Injected" target="_blank" class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer" @click="connectWallet">Connect Wallet</div>
           <div v-else-if="account" class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer">{{this.account.substring(0,6)+"..."+this.account.substring(this.account.length-4,this.account.length)}}</div>
           <div v-else class="bg-purple-800 mt-6 mb-6 mx-5 text-white px-5 py-2 rounded-lg cursor-pointer" @click="connectWallet">Connect Wallet</div>
         </div>
@@ -16,7 +16,7 @@
         </div>
         <input type="text" class="bg-white h-8 px-3 py-2 mr-10 mt-3 placeholder-opacity" placeholder="Wallet Address">
       </div>
-      <div class="bg-white ml-3 mr-10 mt-1 rounded-md">
+      <div class="bg-white mx-3 mt-1 rounded-md">
         <div class="flex justify-center">
           <div class="mt-10 mx-10 bg-gray-200 border-dashed border-2 border-gray-300 rounded">
             <div class="flex justify-center">
@@ -70,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-4 ml-3 mr-10 mt-5 mb-10">
+      <div class="mx-3 mt-5 mb-10" :class="is_mobile?'block':'grid grid-cols-2 gap-4'">
         <div class="col-start-1 col-end-2 bg-white rounded">
           <div class="mt-5 ml-10">
             <p class="text-xl text-gray-600 font-semibold">Reward Distributed To Holders</p>
@@ -86,16 +86,17 @@
             <p class="text-xl font-semibold ml-5">Shiba Contract</p>
           </div>
           <div class="flex ml-10">
-            <p class="text-gray-500">0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff</p>
+            <p v-if="is_mobile" class="text-gray-500">0x5294...46Ff</p>
+            <p v-else class="text-gray-500">0x52941a733F7bAb6E52d5c8f2045c9D9D9eA246Ff</p>
             <SvgIcon text="Shibawatch" />
           </div>
           <div class="flex mt-5 ml-10">
             <SvgIcon text="distribute" />
-
             <p class="text-xl font-semibold ml-5">BUSD Contract</p>
           </div>
           <div class="flex ml-10 mb-2">
-            <p class="text-gray-500">0xe9e7cea3dedca5984780bafc599bd69add087d56</p>
+            <p v-if="is_mobile" class="text-gray-500">0xe9e7...7d56</p>
+            <p v-else class="text-gray-500">0xe9e7cea3dedca5984780bafc599bd69add087d56</p>
             <SvgIcon text="busd_copy" />
           </div>
         </div>
@@ -105,6 +106,7 @@
 </template>
 
 <script>
+
 import SvgIcon from './SvgIcon';
 import Leftside from './Leftside'
 import Web3 from "web3";
@@ -114,6 +116,8 @@ import Fortmatic from 'fortmatic';
 import ShibaJson from "../contract/ShibaWatch.json"
 import BusdJson from "../contract/BUSD.json"
 import DividendDistributorJson from "../contract/DividendDistributor.json"
+
+
 export default {
   components: {
     SvgIcon,
@@ -121,9 +125,10 @@ export default {
   },
   computed:{
     web3Injected() {
-       return true;
-    }
+      return true;
+    },
   },
+
   data() {
     return {
       value: [],
@@ -144,8 +149,16 @@ export default {
       busdAbi: BusdJson.abi,
       DividendDistributorAbi: DividendDistributorJson.abi,
       networkId: "1",
-      web3Modal:null
+      web3Modal:null,
+      is_mobile:false,
+      loading: true
     }
+  },
+  mounted() {
+    if(window.innerWidth<1024) {
+      this.is_mobile = true;
+    }
+    this.loading = false
   },
   async created() {
     this.web3Modal = new Web3Modal({
@@ -171,6 +184,7 @@ export default {
     this.distributorContract = new this.web3Obj.eth.Contract(this.DividendDistributorAbi, Web3.utils.toChecksumAddress("0x11ac188b5aa890026e084aac0d0fc6d4d1178933"));
     const res = await this.distributorContract.methods.totalDistributed().call();
     this.totalDistributed = Math.round(1000*Web3.utils.fromWei(res, 'ether'))/1000;
+    this.loaded = true;
   },
   methods: {
     async networkChanged(){
@@ -180,10 +194,10 @@ export default {
       const res2 = await this.busdContract.methods.balanceOf(this.account).call();
       this.busdBalance = Math.round(100*Web3.utils.fromWei(res2, 'ether'))/100;
       const res3 = await this.distributorContract.methods.getUnpaidEarnings(this.account).call();
-      this.pending = Web3.utils.fromWei(res3, 'ether');
+      this.pending = Math.round(1000*Web3.utils.fromWei(res3, 'ether'))/1000;
       const res4 = await this.distributorContract.methods.shares(this.account).call();
       console.log(res4);
-      this.total = Web3.utils.fromWei(res4[2], 'ether');
+      this.total = Math.round(1000*Web3.utils.fromWei(res4[2], 'ether'))/1000;
     },
     async getAccountData(provider) {
       const web3 = new Web3(provider);
